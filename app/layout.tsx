@@ -1,0 +1,25 @@
+import type { Metadata } from 'next'
+import '@/styles/globals.css'
+
+export const metadata: Metadata = {
+  title: 'Solidity Compiler',
+  description: 'A Next.js frontend for compiling Solidity smart contracts',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <div className="relative flex min-h-screen flex-col">
+          <div className="flex-1">
+            {children}
+          </div>
+        </div>
+      </body>
+    </html>
+  )
+} 
