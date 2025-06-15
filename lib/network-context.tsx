@@ -22,7 +22,7 @@ export function NetworkProvider({ children }: { children: React.ReactNode }) {
     // Default to zkSync Era Sepolia
     const [selectedNetworkId, setSelectedNetworkId] =
         useState<SupportedChainId>(
-            Object.keys(supportedNetworks)[0] as SupportedChainId
+            Number(Object.keys(supportedNetworks)[0]) as SupportedChainId
         );
 
     // Update selected network based on connected wallet's chain
