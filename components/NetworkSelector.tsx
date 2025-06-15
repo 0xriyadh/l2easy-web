@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Check, AlertCircle } from "lucide-react";
+import { ChevronDown, Check, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNetwork } from "@/lib/network-context";
+import { useChainId, useSwitchChain } from "wagmi";
 import type { SupportedChainId } from "@/lib/wagmi";
 
 export default function NetworkSelector() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isSwitching, setIsSwitching] = useState(false);
+    const chainId = useChainId();
+    const { switchChain } = useSwitchChain();
     const {
         selectedNetwork,
         setSelectedNetwork,
@@ -20,9 +24,18 @@ export default function NetworkSelector() {
         setSelectedNetwork(networkId);
         setIsOpen(false);
 
-        // Auto-switch network if wallet is connected but on wrong network
-        if (!isCorrectNetwork) {
-            await switchToSelectedNetwork();
+        // Auto-switch network immediately when user selects it
+        // We need to switch to the newly selected network, not check the old state
+        if (switchChain && networkId !== chainId) {
+            setIsSwitching(true);
+            try {
+                await switchChain({ chainId: networkId });
+            } catch (error) {
+                console.error("Failed to switch network:", error);
+                // You can add toast notification here if desired
+            } finally {
+                setIsSwitching(false);
+            }
         }
     };
 
@@ -41,14 +54,21 @@ export default function NetworkSelector() {
             <Button
                 variant="outline"
                 onClick={() => setIsOpen(!isOpen)}
+                disabled={isSwitching}
                 className={`flex items-center gap-2 min-w-[180px] justify-between ${
                     !isCorrectNetwork ? "border-orange-500 bg-orange-50" : ""
                 }`}
             >
                 <div className="flex items-center gap-2">
-                    {getNetworkIcon(selectedNetwork.id as SupportedChainId)}
-                    <span className="truncate">{selectedNetwork.name}</span>
-                    {!isCorrectNetwork && (
+                    {isSwitching ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                        getNetworkIcon(selectedNetwork.id as SupportedChainId)
+                    )}
+                    <span className="truncate">
+                        {isSwitching ? "Switching..." : selectedNetwork.name}
+                    </span>
+                    {!isCorrectNetwork && !isSwitching && (
                         <AlertCircle className="w-4 h-4 text-orange-500" />
                     )}
                 </div>
@@ -74,7 +94,12 @@ export default function NetworkSelector() {
                                     onClick={() =>
                                         handleNetworkSelect(networkId)
                                     }
-                                    className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-3 border-b border-gray-100 last:border-b-0"
+                                    disabled={isSwitching}
+                                    className={`w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-3 border-b border-gray-100 last:border-b-0 ${
+                                        isSwitching
+                                            ? "opacity-50 cursor-not-allowed"
+                                            : ""
+                                    }`}
                                 >
                                     {getNetworkIcon(networkId)}
                                     <div className="flex-1 min-w-0">
