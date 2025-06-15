@@ -14,6 +14,7 @@ import {
     type CompileFormData,
     type CompileResponseType,
 } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [mounted, setMounted] = useState(false);
@@ -21,6 +22,7 @@ export default function Home() {
         useState<CompileResponseType | null>(null);
     const [compileError, setCompileError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
@@ -117,9 +119,7 @@ export default function Home() {
                         </p>
                         <div className="mt-4">
                             <Button
-                                onClick={() =>
-                                    (window.location.href = "/questionnaire")
-                                }
+                                onClick={() => router.push("/questionnaire")}
                                 variant="outline"
                                 className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 text-purple-700 hover:from-purple-100 hover:to-blue-100"
                             >
