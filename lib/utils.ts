@@ -27,37 +27,7 @@ export interface UserWeights {
     "Dev Experience": number;
 }
 
-export function calculateFinalScores(
-    protocolData: ProtocolData,
-    userWeights: UserWeights
-) {
-    const stageMapping = { 0: 0.0, 1: 0.5, 2: 1.0 };
-    const finalScores: { [key: string]: number } = {};
-
-    for (const protocolName in protocolData) {
-        const metrics = protocolData[protocolName];
-
-        const scalability = (metrics.TPS + metrics.Liveness) / 2;
-        const security = (metrics.Risk + metrics.TVL + metrics.Finality) / 3;
-        const decentralization = stageMapping[metrics.Stage as 0 | 1 | 2];
-        const costEfficiency = metrics.Cost;
-        const devExperience = (metrics.EVM + metrics.Language) / 2;
-
-        const weightedScore =
-            userWeights["Scalability"] * scalability +
-            userWeights["Security"] * security +
-            userWeights["Decentralization"] * decentralization +
-            userWeights["Cost Efficiency"] * costEfficiency +
-            userWeights["Dev Experience"] * devExperience;
-
-        const finalScore = Number((weightedScore / 5).toFixed(4));
-        finalScores[protocolName] = finalScore;
-    }
-
-    return finalScores;
-}
-
-export const protocolData = {
+export const protocolData: ProtocolData = {
     Optimism: {
         TPS: 0.558,
         Liveness: 0.5125,
@@ -103,6 +73,33 @@ export const protocolData = {
         Language: 1,
     },
 };
+
+export function calculateFinalScores(userWeights: UserWeights) {
+    const stageMapping = { 0: 0.0, 1: 0.5, 2: 1.0 };
+    const finalScores: { [key: string]: number } = {};
+
+    for (const protocolName in protocolData) {
+        const metrics = protocolData[protocolName];
+
+        const scalability = (metrics.TPS + metrics.Liveness) / 2;
+        const security = (metrics.Risk + metrics.TVL + metrics.Finality) / 3;
+        const decentralization = stageMapping[metrics.Stage as 0 | 1 | 2];
+        const costEfficiency = metrics.Cost;
+        const devExperience = (metrics.EVM + metrics.Language) / 2;
+
+        const weightedScore =
+            userWeights["Scalability"] * scalability +
+            userWeights["Security"] * security +
+            userWeights["Decentralization"] * decentralization +
+            userWeights["Cost Efficiency"] * costEfficiency +
+            userWeights["Dev Experience"] * devExperience;
+
+        const finalScore = Number((weightedScore / 5).toFixed(4));
+        finalScores[protocolName] = finalScore;
+    }
+
+    return finalScores;
+}
 
 export const userWeights = {
     Scalability: 9,
