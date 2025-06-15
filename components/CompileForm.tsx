@@ -46,6 +46,7 @@ export default function CompileForm() {
             }
 
             const result = await response.json();
+            console.log("result3454", result);
 
             // Validate response with Zod schema
             const validatedResult = CompileResponse.parse(result);
@@ -80,7 +81,12 @@ export default function CompileForm() {
                     </label>
                     <Textarea
                         id="source"
-                        placeholder="// SPDX-License-Identifier: MIT&#10;pragma solidity ^0.8.0;&#10;&#10;contract MyContract {&#10;    // Your contract code here&#10;}"
+                        placeholder={`// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MyContract {
+    // Your contract code here
+}`}
                         className="min-h-[200px] font-mono text-sm"
                         {...register("source")}
                     />
