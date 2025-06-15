@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import WalletButton from "@/components/WalletButton";
 import DeployButton from "@/components/DeployButton";
 import NetworkSelector from "@/components/NetworkSelector";
@@ -108,18 +108,6 @@ function DeployContent() {
     return (
         <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
             <div className="max-w-4xl mx-auto space-y-8 py-8">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <Button
-                        variant="ghost"
-                        onClick={() => router.back()}
-                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Back to Results
-                    </Button>
-                </div>
-
                 {/* Title Section */}
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">

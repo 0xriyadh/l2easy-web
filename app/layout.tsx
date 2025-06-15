@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { Providers } from "./providers";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
     title: "Solidity Compiler",
@@ -17,6 +18,7 @@ export default function RootLayout({
             <body className="min-h-screen bg-background font-sans antialiased">
                 <Providers>
                     <div className="relative flex min-h-screen flex-col">
+                        <Header />
                         <div className="flex-1">{children}</div>
                     </div>
                 </Providers>

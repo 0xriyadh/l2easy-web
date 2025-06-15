@@ -127,7 +127,7 @@ export default function Home() {
                         <div className="flex items-center justify-center gap-3 mb-6">
                             <Sparkles className="w-12 h-12 text-purple-600" />
                             <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                                Smart Deploy
+                                L2Easy
                             </h1>
                         </div>
                         <p className="text-xl text-gray-600 mb-4 max-w-2xl mx-auto">
