@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import WalletButton from "@/components/WalletButton";
 import DeployButton from "@/components/DeployButton";
 import NetworkSelector from "@/components/NetworkSelector";
@@ -15,16 +17,36 @@ import {
     type CompileResponseType,
 } from "@/lib/types";
 
-export default function Home() {
+// Network mapping
+const networkMapping = {
+    zksync: "ZkSync Era Sepolia",
+    arbitrum: "Arbitrum Sepolia",
+    optimism: "OP Sepolia",
+} as const;
+
+export default function DeployPage() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [mounted, setMounted] = useState(false);
     const [compileResult, setCompileResult] =
         useState<CompileResponseType | null>(null);
     const [compileError, setCompileError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [recommendedNetwork, setRecommendedNetwork] = useState<string | null>(
+        null
+    );
 
     useEffect(() => {
         setMounted(true);
-    }, []);
+
+        // Get recommended network from URL params
+        const network = searchParams.get("network");
+        if (network && network in networkMapping) {
+            setRecommendedNetwork(
+                networkMapping[network as keyof typeof networkMapping]
+            );
+        }
+    }, [searchParams]);
 
     const {
         register,
@@ -54,7 +76,7 @@ export default function Home() {
             }
 
             const result = await response.json();
-            console.log("result3454", result);
+            console.log("Compile result:", result);
 
             // Validate response with Zod schema
             const validatedResult = CompileResponse.parse(result);
@@ -79,11 +101,10 @@ export default function Home() {
                     <div className="flex justify-between items-center">
                         <div className="text-center flex-1">
                             <h1 className="text-3xl font-bold mb-2">
-                                Solidity Compiler
+                                Deploy Your Contract
                             </h1>
                             <p className="text-muted-foreground">
-                                Enter your Solidity source code below and click
-                                compile to get the ABI and bytecode.
+                                Compile and deploy your Solidity smart contract
                             </p>
                         </div>
                         <div className="flex items-center gap-4">
@@ -105,27 +126,42 @@ export default function Home() {
     return (
         <main className="container mx-auto py-8">
             <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
+                {/* Header with Back Button */}
+                <div className="flex items-center justify-between">
+                    <Button
+                        variant="ghost"
+                        onClick={() => router.back()}
+                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        Back to Results
+                    </Button>
+                </div>
+
                 {/* Header with Network Selection and Wallet Connection */}
                 <div className="flex justify-between items-center">
                     <div className="text-center flex-1">
-                        <h1 className="text-3xl font-bold mb-2">
-                            Solidity Compiler
+                        <h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-3">
+                            <Sparkles className="w-8 h-8 text-purple-600" />
+                            Deploy Your Contract
                         </h1>
                         <p className="text-muted-foreground">
-                            Enter your Solidity source code below and click
-                            compile to get the ABI and bytecode.
+                            Compile and deploy your Solidity smart contract
                         </p>
-                        <div className="mt-4">
-                            <Button
-                                onClick={() =>
-                                    (window.location.href = "/questionnaire")
-                                }
-                                variant="outline"
-                                className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 text-purple-700 hover:from-purple-100 hover:to-blue-100"
-                            >
-                                🎯 Find Perfect Network for You
-                            </Button>
-                        </div>
+                        {recommendedNetwork && (
+                            <div className="mt-4 p-3 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg">
+                                <p className="text-sm text-purple-800 font-medium">
+                                    🎯 Recommended Network:{" "}
+                                    <span className="font-semibold">
+                                        {recommendedNetwork}
+                                    </span>
+                                </p>
+                                <p className="text-xs text-purple-600 mt-1">
+                                    Based on your preferences, this network is
+                                    the best match for your needs
+                                </p>
+                            </div>
+                        )}
                     </div>
                     <div className="flex items-center gap-4">
                         <NetworkSelector />
@@ -145,9 +181,21 @@ export default function Home() {
 pragma solidity ^0.8.0;
 
 contract MyContract {
-    // Your contract code here
+    string public message;
+    
+    constructor(string memory _message) {
+        message = _message;
+    }
+    
+    function setMessage(string memory _message) public {
+        message = _message;
+    }
+    
+    function getMessage() public view returns (string memory) {
+        return message;
+    }
 }`}
-                            className="min-h-[200px] font-mono text-sm"
+                            className="min-h-[300px] font-mono text-sm"
                             {...register("source")}
                         />
                         {errors.source && (
@@ -160,9 +208,9 @@ contract MyContract {
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full"
+                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                     >
-                        {isLoading ? "Compiling..." : "Compile"}
+                        {isLoading ? "Compiling..." : "Compile Contract"}
                     </Button>
 
                     {errors.root && (
@@ -191,6 +239,15 @@ contract MyContract {
                 {/* Deploy Button */}
                 {compileResult && (
                     <div className="space-y-4">
+                        <div className="p-4 border border-green-200 bg-green-50 rounded-md">
+                            <p className="text-sm text-green-800 font-medium">
+                                ✅ Compilation Successful!
+                            </p>
+                            <p className="text-sm text-green-700">
+                                Your contract is ready to deploy. Click the
+                                button below to deploy it to the blockchain.
+                            </p>
+                        </div>
                         <DeployButton
                             abi={compileResult.abi}
                             bytecode={compileResult.bytecode}
@@ -205,17 +262,19 @@ contract MyContract {
                 {compileResult && (
                     <div className="space-y-6">
                         <div className="space-y-2">
-                            <h2 className="text-xl font-semibold">
-                                ABI (Application Binary Interface)
+                            <h2 className="text-xl font-semibold flex items-center gap-2">
+                                📋 ABI (Application Binary Interface)
                             </h2>
-                            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono border">
+                            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono border max-h-64 overflow-y-auto">
                                 {JSON.stringify(compileResult.abi, null, 2)}
                             </pre>
                         </div>
 
                         <div className="space-y-2">
-                            <h2 className="text-xl font-semibold">Bytecode</h2>
-                            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono border break-all whitespace-pre-wrap">
+                            <h2 className="text-xl font-semibold flex items-center gap-2">
+                                🔧 Bytecode
+                            </h2>
+                            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono border break-all whitespace-pre-wrap max-h-64 overflow-y-auto">
                                 {compileResult.bytecode}
                             </pre>
                         </div>
