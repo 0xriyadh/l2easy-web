@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ const networkMapping = {
     optimism: "OP Sepolia",
 } as const;
 
-export default function DeployPage() {
+function DeployContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [mounted, setMounted] = useState(false);
@@ -282,5 +282,40 @@ contract MyContract {
                 )}
             </div>
         </main>
+    );
+}
+
+export default function DeployPage() {
+    return (
+        <Suspense
+            fallback={
+                <main className="container mx-auto py-8">
+                    <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
+                        <div className="flex justify-between items-center">
+                            <div className="text-center flex-1">
+                                <h1 className="text-3xl font-bold mb-2">
+                                    Deploy Your Contract
+                                </h1>
+                                <p className="text-muted-foreground">
+                                    Loading...
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <Button
+                                    disabled
+                                    variant="outline"
+                                    className="min-w-[180px]"
+                                >
+                                    Select Network
+                                </Button>
+                                <Button disabled>Connect Wallet</Button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            }
+        >
+            <DeployContent />
+        </Suspense>
     );
 }

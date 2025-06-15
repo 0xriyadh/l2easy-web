@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +48,8 @@ const categoryIcons = {
     "Dev Experience": Code,
 };
 
-export default function ResultsPage() {
+// Create a separate component for the search params logic
+function ResultsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [results, setResults] = useState<
@@ -315,5 +316,24 @@ export default function ResultsPage() {
                 </div>
             </div>
         </main>
+    );
+}
+
+export default function ResultsPage() {
+    return (
+        <Suspense
+            fallback={
+                <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600">
+                            Calculating your perfect match...
+                        </p>
+                    </div>
+                </main>
+            }
+        >
+            <ResultsContent />
+        </Suspense>
     );
 }
