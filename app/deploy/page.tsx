@@ -118,10 +118,6 @@ function DeployContent() {
                         <ArrowLeft className="w-4 h-4" />
                         Back to Results
                     </Button>
-                    <div className="flex items-center gap-4">
-                        <NetworkSelector />
-                        <WalletButton />
-                    </div>
                 </div>
 
                 {/* Title Section */}
@@ -133,6 +129,25 @@ function DeployContent() {
                     <p className="text-lg text-gray-600 mb-6">
                         Compile and deploy your Solidity smart contract
                     </p>
+                </div>
+
+                {/* Network & Wallet Controls */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                Network & Wallet
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                                Select your target network and connect your
+                                wallet to deploy
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <NetworkSelector />
+                            <WalletButton />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Recommended Network Card */}

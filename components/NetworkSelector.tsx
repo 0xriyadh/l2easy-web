@@ -41,10 +41,44 @@ export default function NetworkSelector() {
 
     const getNetworkIcon = (networkId: SupportedChainId) => {
         const network = supportedNetworks[networkId];
-        // You can add custom icons here later
+
+        // Network-specific colors and icons
+        const networkStyles = {
+            11155111: {
+                bg: "bg-gradient-to-r from-blue-500 to-cyan-500",
+                text: "text-white",
+                icon: "E",
+            }, // Sepolia
+            421614: {
+                bg: "bg-gradient-to-r from-blue-500 to-cyan-500",
+                text: "text-white",
+                icon: "A",
+            }, // Arbitrum Sepolia
+            11155420: {
+                bg: "bg-gradient-to-r from-red-500 to-orange-500",
+                text: "text-white",
+                icon: "O",
+            }, // OP Sepolia
+            300: {
+                bg: "bg-gradient-to-r from-purple-500 to-pink-500",
+                text: "text-white",
+                icon: "Z",
+            }, // zkSync Era Sepolia
+        };
+
+        const style = networkStyles[
+            networkId as keyof typeof networkStyles
+        ] || {
+            bg: "bg-gray-200",
+            text: "text-gray-700",
+            icon: network.name.charAt(0),
+        };
+
         return (
-            <div className="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center text-xs font-bold">
-                {network.name.charAt(0)}
+            <div
+                className={`w-6 h-6 rounded-full ${style.bg} flex items-center justify-center text-xs font-bold ${style.text} shadow-sm`}
+            >
+                {style.icon}
             </div>
         );
     };
@@ -55,32 +89,41 @@ export default function NetworkSelector() {
                 variant="outline"
                 onClick={() => setIsOpen(!isOpen)}
                 disabled={isSwitching}
-                className={`flex items-center gap-2 min-w-[180px] justify-between ${
-                    !isCorrectNetwork ? "border-orange-500 bg-orange-50" : ""
+                className={`flex items-center gap-3 min-w-[200px] justify-between h-11 px-4 rounded-lg border-2 transition-all ${
+                    !isCorrectNetwork
+                        ? "border-orange-400 bg-orange-50 hover:bg-orange-100 shadow-sm"
+                        : "border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 shadow-sm"
                 }`}
             >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                     {isSwitching ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
                     ) : (
                         getNetworkIcon(selectedNetwork.id as SupportedChainId)
                     )}
-                    <span className="truncate">
-                        {isSwitching ? "Switching..." : selectedNetwork.name}
-                    </span>
-                    {!isCorrectNetwork && !isSwitching && (
-                        <AlertCircle className="w-4 h-4 text-orange-500" />
-                    )}
+                    <div className="flex flex-col items-start min-w-0">
+                        <span className="text-sm font-semibold text-gray-900 truncate">
+                            {isSwitching
+                                ? "Switching..."
+                                : selectedNetwork.name}
+                        </span>
+                        {!isCorrectNetwork && !isSwitching && (
+                            <span className="text-xs text-orange-600 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                Click to switch
+                            </span>
+                        )}
+                    </div>
                 </div>
                 <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
+                    className={`w-4 h-4 transition-transform text-gray-500 ${
                         isOpen ? "rotate-180" : ""
                     }`}
                 />
             </Button>
 
             {isOpen && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
                     {Object.entries(supportedNetworks).map(
                         ([chainId, network]) => {
                             const networkId = parseInt(
@@ -95,15 +138,15 @@ export default function NetworkSelector() {
                                         handleNetworkSelect(networkId)
                                     }
                                     disabled={isSwitching}
-                                    className={`w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-3 border-b border-gray-100 last:border-b-0 ${
+                                    className={`w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-3 border-b border-gray-100 last:border-b-0 transition-colors ${
                                         isSwitching
                                             ? "opacity-50 cursor-not-allowed"
                                             : ""
-                                    }`}
+                                    } ${isSelected ? "bg-blue-50" : ""}`}
                                 >
                                     {getNetworkIcon(networkId)}
                                     <div className="flex-1 min-w-0">
-                                        <div className="font-medium truncate">
+                                        <div className="font-semibold text-gray-900 truncate">
                                             {network.name}
                                         </div>
                                         <div className="text-sm text-gray-500 truncate">
@@ -117,21 +160,6 @@ export default function NetworkSelector() {
                             );
                         }
                     )}
-                </div>
-            )}
-
-            {!isCorrectNetwork && isConnected && (
-                <div className="mt-2 text-sm text-orange-600 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    Switch to {selectedNetwork.name} to deploy
-                </div>
-            )}
-
-            {!isConnected && (
-                <div className="mt-2 text-sm text-blue-600 flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4" />
-                    {selectedNetwork.name} will be used when you connect your
-                    wallet
                 </div>
             )}
 
