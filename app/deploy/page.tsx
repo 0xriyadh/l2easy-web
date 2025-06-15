@@ -96,37 +96,19 @@ function DeployContent() {
 
     if (!mounted) {
         return (
-            <main className="container mx-auto py-8">
-                <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
-                    <div className="flex justify-between items-center">
-                        <div className="text-center flex-1">
-                            <h1 className="text-3xl font-bold mb-2">
-                                Deploy Your Contract
-                            </h1>
-                            <p className="text-muted-foreground">
-                                Compile and deploy your Solidity smart contract
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Button
-                                disabled
-                                variant="outline"
-                                className="min-w-[180px]"
-                            >
-                                Select Network
-                            </Button>
-                            <Button disabled>Connect Wallet</Button>
-                        </div>
-                    </div>
+            <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading...</p>
                 </div>
             </main>
         );
     }
 
     return (
-        <main className="container mx-auto py-8">
-            <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
-                {/* Header with Back Button */}
+        <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+            <div className="max-w-4xl mx-auto space-y-8 py-8">
+                {/* Header */}
                 <div className="flex items-center justify-between">
                     <Button
                         variant="ghost"
@@ -136,48 +118,60 @@ function DeployContent() {
                         <ArrowLeft className="w-4 h-4" />
                         Back to Results
                     </Button>
-                </div>
-
-                {/* Header with Network Selection and Wallet Connection */}
-                <div className="flex justify-between items-center">
-                    <div className="text-center flex-1">
-                        <h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-3">
-                            <Sparkles className="w-8 h-8 text-purple-600" />
-                            Deploy Your Contract
-                        </h1>
-                        <p className="text-muted-foreground">
-                            Compile and deploy your Solidity smart contract
-                        </p>
-                        {recommendedNetwork && (
-                            <div className="mt-4 p-3 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg">
-                                <p className="text-sm text-purple-800 font-medium">
-                                    🎯 Recommended Network:{" "}
-                                    <span className="font-semibold">
-                                        {recommendedNetwork}
-                                    </span>
-                                </p>
-                                <p className="text-xs text-purple-600 mt-1">
-                                    Based on your preferences, this network is
-                                    the best match for your needs
-                                </p>
-                            </div>
-                        )}
-                    </div>
                     <div className="flex items-center gap-4">
                         <NetworkSelector />
                         <WalletButton />
                     </div>
                 </div>
 
-                {/* Compile Form */}
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="space-y-2">
-                        <label htmlFor="source" className="text-sm font-medium">
-                            Solidity Source Code
-                        </label>
-                        <Textarea
-                            id="source"
-                            placeholder={`// SPDX-License-Identifier: MIT
+                {/* Title Section */}
+                <div className="text-center">
+                    <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
+                        <Sparkles className="w-10 h-10 text-purple-600" />
+                        Deploy Your Contract
+                    </h1>
+                    <p className="text-lg text-gray-600 mb-6">
+                        Compile and deploy your Solidity smart contract
+                    </p>
+                </div>
+
+                {/* Recommended Network Card */}
+                {recommendedNetwork && (
+                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-xl p-6 shadow-sm">
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                            <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-sm font-bold">
+                                    🎯
+                                </span>
+                            </div>
+                            <h3 className="text-lg font-semibold text-purple-800">
+                                Recommended Network
+                            </h3>
+                        </div>
+                        <p className="text-center text-purple-700 font-medium text-lg mb-1">
+                            {recommendedNetwork}
+                        </p>
+                        <p className="text-center text-purple-600 text-sm">
+                            Based on your preferences, this network is the best
+                            match for your needs
+                        </p>
+                    </div>
+                )}
+
+                {/* Compile Form Card */}
+                <div className="bg-white rounded-xl shadow-xl border-0 overflow-hidden">
+                    <div className="p-6">
+                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                            Smart Contract Source Code
+                        </h2>
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="space-y-6"
+                        >
+                            <div className="space-y-2">
+                                <Textarea
+                                    id="source"
+                                    placeholder={`// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract MyContract {
@@ -195,88 +189,116 @@ contract MyContract {
         return message;
     }
 }`}
-                            className="min-h-[300px] font-mono text-sm"
-                            {...register("source")}
-                        />
-                        {errors.source && (
-                            <p className="text-sm text-destructive">
-                                {errors.source.message}
-                            </p>
-                        )}
+                                    className="min-h-[300px] font-mono text-sm border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
+                                    {...register("source")}
+                                />
+                                {errors.source && (
+                                    <p className="text-sm text-red-600">
+                                        {errors.source.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <Button
+                                type="submit"
+                                disabled={isLoading}
+                                size="lg"
+                                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-3 text-lg"
+                            >
+                                {isLoading
+                                    ? "Compiling..."
+                                    : "Compile Contract"}
+                            </Button>
+
+                            {errors.root && (
+                                <div className="p-4 border border-red-200 bg-red-50 rounded-lg">
+                                    <p className="text-sm text-red-800 font-medium mb-1">
+                                        Compilation Error
+                                    </p>
+                                    <p className="text-sm text-red-700">
+                                        {errors.root.message}
+                                    </p>
+                                </div>
+                            )}
+
+                            {compileError && (
+                                <div className="p-4 border border-red-200 bg-red-50 rounded-lg">
+                                    <p className="text-sm text-red-800 font-medium mb-1">
+                                        Error
+                                    </p>
+                                    <p className="text-sm text-red-700">
+                                        {compileError}
+                                    </p>
+                                </div>
+                            )}
+                        </form>
                     </div>
+                </div>
 
-                    <Button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                    >
-                        {isLoading ? "Compiling..." : "Compile Contract"}
-                    </Button>
-
-                    {errors.root && (
-                        <div className="p-4 border border-destructive bg-destructive/10 rounded-md">
-                            <p className="text-sm text-destructive font-medium">
-                                Compilation Error
-                            </p>
-                            <p className="text-sm text-destructive">
-                                {errors.root.message}
-                            </p>
-                        </div>
-                    )}
-
-                    {compileError && (
-                        <div className="p-4 border border-destructive bg-destructive/10 rounded-md">
-                            <p className="text-sm text-destructive font-medium">
-                                Error
-                            </p>
-                            <p className="text-sm text-destructive">
-                                {compileError}
-                            </p>
-                        </div>
-                    )}
-                </form>
-
-                {/* Deploy Button */}
+                {/* Success & Deploy Section */}
                 {compileResult && (
-                    <div className="space-y-4">
-                        <div className="p-4 border border-green-200 bg-green-50 rounded-md">
-                            <p className="text-sm text-green-800 font-medium">
-                                ✅ Compilation Successful!
-                            </p>
-                            <p className="text-sm text-green-700">
+                    <div className="space-y-6">
+                        <div className="bg-green-50 border border-green-200 rounded-xl p-6 shadow-sm">
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-sm">
+                                        ✓
+                                    </span>
+                                </div>
+                                <h3 className="text-lg font-semibold text-green-800">
+                                    Compilation Successful!
+                                </h3>
+                            </div>
+                            <p className="text-center text-green-700">
                                 Your contract is ready to deploy. Click the
                                 button below to deploy it to the blockchain.
                             </p>
                         </div>
-                        <DeployButton
-                            abi={compileResult.abi}
-                            bytecode={compileResult.bytecode}
-                            disabled={
-                                !compileResult.abi || !compileResult.bytecode
-                            }
-                        />
+
+                        <div className="flex justify-center">
+                            <DeployButton
+                                abi={compileResult.abi}
+                                bytecode={compileResult.bytecode}
+                                disabled={
+                                    !compileResult.abi ||
+                                    !compileResult.bytecode
+                                }
+                            />
+                        </div>
                     </div>
                 )}
 
                 {/* Compilation Results */}
                 {compileResult && (
                     <div className="space-y-6">
-                        <div className="space-y-2">
-                            <h2 className="text-xl font-semibold flex items-center gap-2">
-                                📋 ABI (Application Binary Interface)
-                            </h2>
-                            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono border max-h-64 overflow-y-auto">
-                                {JSON.stringify(compileResult.abi, null, 2)}
-                            </pre>
+                        <div className="bg-white rounded-xl shadow-xl border-0 overflow-hidden">
+                            <div className="p-6">
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    📋 ABI (Application Binary Interface)
+                                </h2>
+                                <div className="bg-gray-50 rounded-lg p-4 border max-h-64 overflow-y-auto">
+                                    <pre className="text-sm font-mono text-gray-800 whitespace-pre-wrap">
+                                        {JSON.stringify(
+                                            compileResult.abi,
+                                            null,
+                                            2
+                                        )}
+                                    </pre>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <h2 className="text-xl font-semibold flex items-center gap-2">
-                                🔧 Bytecode
-                            </h2>
-                            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono border break-all whitespace-pre-wrap max-h-64 overflow-y-auto">
-                                {compileResult.bytecode}
-                            </pre>
+                        <div className="bg-white rounded-xl shadow-xl border-0 overflow-hidden">
+                            <div className="p-6">
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    🔧 Bytecode
+                                </h2>
+                                <div className="bg-gray-50 rounded-lg p-4 border max-h-64 overflow-y-auto">
+                                    <pre className="text-sm font-mono text-gray-800 break-all whitespace-pre-wrap">
+                                        {compileResult.bytecode}
+                                    </pre>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -289,28 +311,10 @@ export default function DeployPage() {
     return (
         <Suspense
             fallback={
-                <main className="container mx-auto py-8">
-                    <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
-                        <div className="flex justify-between items-center">
-                            <div className="text-center flex-1">
-                                <h1 className="text-3xl font-bold mb-2">
-                                    Deploy Your Contract
-                                </h1>
-                                <p className="text-muted-foreground">
-                                    Loading...
-                                </p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <Button
-                                    disabled
-                                    variant="outline"
-                                    className="min-w-[180px]"
-                                >
-                                    Select Network
-                                </Button>
-                                <Button disabled>Connect Wallet</Button>
-                            </div>
-                        </div>
+                <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600">Loading...</p>
                     </div>
                 </main>
             }
