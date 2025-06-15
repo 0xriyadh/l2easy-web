@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import WalletButton from "@/components/WalletButton";
 import DeployButton from "@/components/DeployButton";
+import NetworkSelector from "@/components/NetworkSelector";
 import {
     CompileFormSchema,
     CompileResponse,
@@ -85,7 +86,14 @@ export default function Home() {
                                 compile to get the ABI and bytecode.
                             </p>
                         </div>
-                        <div className="ml-4">
+                        <div className="flex items-center gap-4">
+                            <Button
+                                disabled
+                                variant="outline"
+                                className="min-w-[180px]"
+                            >
+                                Select Network
+                            </Button>
                             <Button disabled>Connect Wallet</Button>
                         </div>
                     </div>
@@ -97,7 +105,7 @@ export default function Home() {
     return (
         <main className="container mx-auto py-8">
             <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
-                {/* Header with Wallet Connection */}
+                {/* Header with Network Selection and Wallet Connection */}
                 <div className="flex justify-between items-center">
                     <div className="text-center flex-1">
                         <h1 className="text-3xl font-bold mb-2">
@@ -108,7 +116,8 @@ export default function Home() {
                             compile to get the ABI and bytecode.
                         </p>
                     </div>
-                    <div className="ml-4">
+                    <div className="flex items-center gap-4">
+                        <NetworkSelector />
                         <WalletButton />
                     </div>
                 </div>

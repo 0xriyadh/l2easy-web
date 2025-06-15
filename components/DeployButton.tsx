@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Loader2, ExternalLink } from "lucide-react";
 import { type Abi, type Hash } from "viem";
+import { useNetwork } from "@/lib/network-context";
 
 interface DeployButtonProps {
     abi: Abi;
@@ -26,6 +27,7 @@ export default function DeployButton({
     const { address, isConnected } = useAccount();
     const { data: walletClient } = useWalletClient();
     const publicClient = usePublicClient();
+    const { selectedNetwork, isCorrectNetwork } = useNetwork();
     const [txHash, setTxHash] = useState<Hash | null>(null);
     const [contractAddress, setContractAddress] = useState<string | null>(null);
     const [isDeploying, setIsDeploying] = useState(false);
@@ -91,7 +93,8 @@ export default function DeployButton({
         !abi ||
         !bytecode ||
         isDeploying ||
-        isConfirming;
+        isConfirming ||
+        !isCorrectNetwork;
 
     return (
         <div className="space-y-4">
@@ -119,6 +122,18 @@ export default function DeployButton({
                 </div>
             )}
 
+            {!isCorrectNetwork && isConnected && (
+                <div className="p-4 border border-orange-200 bg-orange-50 rounded-md">
+                    <p className="text-sm text-orange-800 font-medium">
+                        Wrong Network
+                    </p>
+                    <p className="text-sm text-orange-700">
+                        Please switch to {selectedNetwork.name} to deploy your
+                        contract.
+                    </p>
+                </div>
+            )}
+
             {txHash && (
                 <div className="space-y-2">
                     <div className="p-4 border border-border bg-muted/50 rounded-md">
@@ -128,7 +143,7 @@ export default function DeployButton({
                                 {txHash}
                             </code>
                             <a
-                                href={`https://sepolia.explorer.zksync.io/tx/${txHash}`}
+                                href={`${selectedNetwork.explorerUrl}/tx/${txHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-primary hover:text-primary/80"
@@ -148,7 +163,7 @@ export default function DeployButton({
                                     {contractAddress}
                                 </code>
                                 <a
-                                    href={`https://sepolia.explorer.zksync.io/address/${contractAddress}`}
+                                    href={`${selectedNetwork.explorerUrl}/address/${contractAddress}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-green-600 hover:text-green-500"

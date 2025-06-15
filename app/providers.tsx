@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NetworkProvider } from "@/lib/network-context";
 
 // Dynamically import WagmiProvider to prevent SSR issues
 const WagmiProviderComponent = dynamic(() => import("./wagmi-provider"), {
@@ -33,7 +34,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <WagmiProviderComponent>{children}</WagmiProviderComponent>
+            <WagmiProviderComponent>
+                <NetworkProvider>{children}</NetworkProvider>
+            </WagmiProviderComponent>
         </QueryClientProvider>
     );
 }

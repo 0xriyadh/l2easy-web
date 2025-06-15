@@ -1,13 +1,24 @@
 import { createConfig, http } from "wagmi";
 import { walletConnect, injected } from "wagmi/connectors";
-import { zkSyncSepoliaTestnet } from "viem/chains";
+import {
+    zkSyncSepoliaTestnet,
+    arbitrumSepolia,
+    optimismSepolia,
+} from "viem/chains";
 
-const rpcUrl =
+// RPC URLs for different networks
+const zkSyncRpcUrl =
     process.env.NEXT_PUBLIC_ALCHEMY_ZKSYNC_RPC ??
     process.env.NEXT_PUBLIC_ZKSYNC_RPC!;
+const arbitrumRpcUrl =
+    process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_RPC ??
+    `https://sepolia-rollup.arbitrum.io/rpc`;
+const optimismRpcUrl =
+    process.env.NEXT_PUBLIC_OPTIMISM_SEPOLIA_RPC ??
+    `https://sepolia.optimism.io`;
 
 export const config = createConfig({
-    chains: [zkSyncSepoliaTestnet],
+    chains: [zkSyncSepoliaTestnet, arbitrumSepolia, optimismSepolia],
     connectors:
         typeof window !== "undefined"
             ? [
@@ -28,10 +39,36 @@ export const config = createConfig({
               ]
             : [],
     transports: {
-        [zkSyncSepoliaTestnet.id]: http(rpcUrl),
+        [zkSyncSepoliaTestnet.id]: http(zkSyncRpcUrl),
+        [arbitrumSepolia.id]: http(arbitrumRpcUrl),
+        [optimismSepolia.id]: http(optimismRpcUrl),
     },
     ssr: true,
 });
 
-// Re-export for convenience
-export { zkSyncSepoliaTestnet as zkSyncSepolia };
+// Network configuration for easy access
+export const supportedNetworks = {
+    [zkSyncSepoliaTestnet.id]: {
+        ...zkSyncSepoliaTestnet,
+        explorerUrl: "https://sepolia.explorer.zksync.io",
+        rpcUrl: zkSyncRpcUrl,
+    },
+    [arbitrumSepolia.id]: {
+        ...arbitrumSepolia,
+        explorerUrl: "https://sepolia.arbiscan.io",
+        rpcUrl: arbitrumRpcUrl,
+    },
+    [optimismSepolia.id]: {
+        ...optimismSepolia,
+        explorerUrl: "https://sepolia-optimism.etherscan.io",
+        rpcUrl: optimismRpcUrl,
+    },
+} as const;
+
+// Export individual chains for convenience
+export {
+    zkSyncSepoliaTestnet as zkSyncSepolia,
+    arbitrumSepolia,
+    optimismSepolia,
+};
+export type SupportedChainId = keyof typeof supportedNetworks;
