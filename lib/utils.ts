@@ -100,11 +100,3 @@ export function calculateFinalScores(userWeights: UserWeights) {
 
     return finalScores;
 }
-
-export const userWeights = {
-    Scalability: 9,
-    Security: 7,
-    Decentralization: 6,
-    "Cost Efficiency": 8,
-    "Dev Experience": 5,
-};
