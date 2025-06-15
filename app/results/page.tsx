@@ -308,7 +308,7 @@ function ResultsContent() {
                 <div className="text-center">
                     <Button
                         variant="outline"
-                        onClick={() => router.push("/questionnaire")}
+                        onClick={() => router.push("/")}
                         className="text-gray-600 border-gray-300 hover:bg-gray-50"
                     >
                         Retake Survey
