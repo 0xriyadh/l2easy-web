@@ -4,13 +4,14 @@ import { useState } from "react";
 import { ChevronDown, Check, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNetwork } from "@/lib/network-context";
-import { useChainId, useSwitchChain } from "wagmi";
+import { useChainId, useSwitchChain, useAccount } from "wagmi";
 import type { SupportedChainId } from "@/lib/wagmi";
 
 export default function NetworkSelector() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSwitching, setIsSwitching] = useState(false);
     const chainId = useChainId();
+    const { isConnected } = useAccount();
     const { switchChain } = useSwitchChain();
     const {
         selectedNetwork,
@@ -24,9 +25,8 @@ export default function NetworkSelector() {
         setSelectedNetwork(networkId);
         setIsOpen(false);
 
-        // Auto-switch network immediately when user selects it
-        // We need to switch to the newly selected network, not check the old state
-        if (switchChain && networkId !== chainId) {
+        // Only auto-switch network when wallet is connected
+        if (isConnected && switchChain && networkId !== chainId) {
             setIsSwitching(true);
             try {
                 await switchChain({ chainId: networkId });
@@ -120,10 +120,18 @@ export default function NetworkSelector() {
                 </div>
             )}
 
-            {!isCorrectNetwork && (
+            {!isCorrectNetwork && isConnected && (
                 <div className="mt-2 text-sm text-orange-600 flex items-center gap-1">
                     <AlertCircle className="w-4 h-4" />
                     Switch to {selectedNetwork.name} to deploy
+                </div>
+            )}
+
+            {!isConnected && (
+                <div className="mt-2 text-sm text-blue-600 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {selectedNetwork.name} will be used when you connect your
+                    wallet
                 </div>
             )}
 

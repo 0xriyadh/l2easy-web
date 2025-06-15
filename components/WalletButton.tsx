@@ -7,6 +7,7 @@ import { formatEther } from "viem";
 import Image from "next/image";
 import WalletConnectIcon from "@/public/wallet-connect-icon.svg";
 import MetaMaskIcon from "@/public/metamask-icon.svg";
+import { useNetwork } from "@/lib/network-context";
 
 export default function WalletButton() {
     const [mounted, setMounted] = useState(false);
@@ -17,10 +18,23 @@ export default function WalletButton() {
     const { data: balance } = useBalance({
         address: address,
     });
+    const { switchToSelectedNetwork } = useNetwork();
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Switch to selected network after wallet connection
+    useEffect(() => {
+        if (isConnected && address) {
+            // Small delay to ensure wallet is fully connected
+            const timer = setTimeout(() => {
+                switchToSelectedNetwork();
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [isConnected, address, switchToSelectedNetwork]);
 
     if (!mounted) {
         return <Button disabled>Connect Wallet</Button>;

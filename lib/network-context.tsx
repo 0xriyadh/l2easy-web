@@ -25,12 +25,8 @@ export function NetworkProvider({ children }: { children: React.ReactNode }) {
             Number(Object.keys(supportedNetworks)[0]) as SupportedChainId
         );
 
-    // Update selected network based on connected wallet's chain
-    useEffect(() => {
-        if (chainId && chainId in supportedNetworks) {
-            setSelectedNetworkId(chainId as SupportedChainId);
-        }
-    }, [chainId]);
+    // Remove the automatic network switching when wallet connects
+    // This preserves the user's network selection
 
     const selectedNetwork = supportedNetworks[selectedNetworkId];
     const isCorrectNetwork = chainId === selectedNetworkId;
