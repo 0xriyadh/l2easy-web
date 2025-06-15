@@ -1,5 +1,5 @@
 import { createConfig, http } from "wagmi";
-import { walletConnect } from "wagmi/connectors";
+import { walletConnect, injected } from "wagmi/connectors";
 import { zkSyncSepoliaTestnet } from "viem/chains";
 
 const rpcUrl =
@@ -11,6 +11,9 @@ export const config = createConfig({
     connectors:
         typeof window !== "undefined"
             ? [
+                  injected({
+                      target: "metaMask",
+                  }),
                   walletConnect({
                       projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID!,
                       metadata: {
