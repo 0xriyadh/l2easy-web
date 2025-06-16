@@ -162,7 +162,7 @@ function ResultsContent() {
                             {topProtocol.protocol}
                         </CardTitle>
                         <CardDescription className="text-xl text-gray-600 mt-2">
-                            Match Score: {(topProtocol.score * 100).toFixed(1)}%
+                            Match Score: {topProtocol.score.toFixed(1)}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="text-center pb-8">
@@ -284,10 +284,9 @@ function ResultsContent() {
                                                     <span>
                                                         {" "}
                                                         Match Score:{" "}
-                                                        {(
-                                                            result.score * 100
-                                                        ).toFixed(1)}
-                                                        %
+                                                        {result.score.toFixed(
+                                                            1
+                                                        )}
                                                     </span>
                                                 )}
                                             </p>
