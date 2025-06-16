@@ -20,6 +20,12 @@ import {
     Code,
 } from "lucide-react";
 import { calculateFinalScores, type UserWeights } from "@/lib/utils";
+import ArbitrumIcon from "@/public/arbitrum-icon.svg";
+import OptimismIcon from "@/public/optimism-icon.svg";
+import BaseIcon from "@/public/base-icon.png";
+import EthereumIcon from "@/public/ethereum-icon.svg";
+import ZkSyncIcon from "@/public/zksync-era-icon.svg";
+import Image from "next/image";
 
 // Map protocol names to supported networks
 const protocolToNetwork = {
@@ -31,11 +37,11 @@ const protocolToNetwork = {
 } as const;
 
 const protocolIcons = {
-    ZkSync: "Z",
-    Arbitrum: "A",
-    Optimism: "O",
-    Base: "B",
-    Ethereum: "E",
+    ZkSync: ZkSyncIcon,
+    Arbitrum: ArbitrumIcon,
+    Optimism: OptimismIcon,
+    Base: BaseIcon,
+    Ethereum: EthereumIcon,
 };
 
 const protocolColors = {
@@ -143,19 +149,16 @@ function ResultsContent() {
                     />
                     <CardHeader className="text-center pb-6">
                         <div className="flex justify-center mb-4">
-                            <div
-                                className={`w-20 h-20 rounded-full bg-gradient-to-r ${
-                                    protocolColors[
-                                        topProtocol.protocol as keyof typeof protocolColors
-                                    ]
-                                } flex items-center justify-center text-white text-3xl font-bold shadow-lg`}
-                            >
-                                {
+                            <Image
+                                src={
                                     protocolIcons[
                                         topProtocol.protocol as keyof typeof protocolIcons
-                                    ]
+                                    ].src
                                 }
-                            </div>
+                                alt={topProtocol.protocol}
+                                width={80}
+                                height={80}
+                            />
                         </div>
                         <CardTitle className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-3">
                             <Trophy className="w-8 h-8 text-yellow-500" />
@@ -259,19 +262,16 @@ function ResultsContent() {
                                             <span className="text-2xl font-bold text-gray-400">
                                                 #{index + 1}
                                             </span>
-                                            <div
-                                                className={`w-12 h-12 rounded-full bg-gradient-to-r ${
-                                                    protocolColors[
-                                                        result.protocol as keyof typeof protocolColors
-                                                    ]
-                                                } flex items-center justify-center text-white text-lg font-bold`}
-                                            >
-                                                {
+                                            <Image
+                                                src={
                                                     protocolIcons[
                                                         result.protocol as keyof typeof protocolIcons
-                                                    ]
+                                                    ].src
                                                 }
-                                            </div>
+                                                alt={result.protocol}
+                                                width={30}
+                                                height={30}
+                                            />
                                         </div>
                                         <div>
                                             <h3 className="font-semibold text-gray-900 text-lg">
