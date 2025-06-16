@@ -21,6 +21,8 @@ const networkKeyToChainId = {
     zksync: 300,
     arbitrum: 421614,
     optimism: 11155420,
+    base: 84532,
+    ethereum: 11155111,
 } as const;
 
 export function NetworkProvider({ children }: { children: React.ReactNode }) {

@@ -254,7 +254,7 @@ export default function Home() {
                     </Card>
 
                     {/* Features Section */}
-                    <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20">
                             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Zap className="w-6 h-6 text-purple-600" />
@@ -292,7 +292,7 @@ export default function Home() {
                                 best-in-class tools
                             </p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </main>

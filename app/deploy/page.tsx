@@ -22,6 +22,8 @@ const networkMapping = {
     zksync: "ZkSync Era Sepolia",
     arbitrum: "Arbitrum Sepolia",
     optimism: "OP Sepolia",
+    base: "Base Sepolia",
+    ethereum: "Ethereum Sepolia",
 } as const;
 
 function DeployContent() {

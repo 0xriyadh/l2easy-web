@@ -45,10 +45,10 @@ export default function NetworkSelector() {
         // Network-specific colors and icons
         const networkStyles = {
             11155111: {
-                bg: "bg-gradient-to-r from-blue-500 to-cyan-500",
+                bg: "bg-gradient-to-r from-gray-600 to-gray-800",
                 text: "text-white",
                 icon: "E",
-            }, // Sepolia
+            }, // Ethereum Sepolia
             421614: {
                 bg: "bg-gradient-to-r from-blue-500 to-cyan-500",
                 text: "text-white",
@@ -59,6 +59,11 @@ export default function NetworkSelector() {
                 text: "text-white",
                 icon: "O",
             }, // OP Sepolia
+            84532: {
+                bg: "bg-gradient-to-r from-blue-600 to-indigo-600",
+                text: "text-white",
+                icon: "B",
+            }, // Base Sepolia
             300: {
                 bg: "bg-gradient-to-r from-purple-500 to-pink-500",
                 text: "text-white",

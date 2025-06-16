@@ -4,6 +4,8 @@ import {
     zkSyncSepoliaTestnet,
     arbitrumSepolia,
     optimismSepolia,
+    baseSepolia,
+    sepolia,
 } from "viem/chains";
 
 // RPC URLs for different networks
@@ -16,9 +18,20 @@ const arbitrumRpcUrl =
 const optimismRpcUrl =
     process.env.NEXT_PUBLIC_OPTIMISM_SEPOLIA_RPC ??
     `https://sepolia.optimism.io`;
+const baseRpcUrl =
+    process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC ?? `https://sepolia.base.org`;
+const ethereumRpcUrl =
+    process.env.NEXT_PUBLIC_ETHEREUM_SEPOLIA_RPC ??
+    `https://ethereum-sepolia-rpc.publicnode.com`;
 
 export const config = createConfig({
-    chains: [zkSyncSepoliaTestnet, arbitrumSepolia, optimismSepolia],
+    chains: [
+        zkSyncSepoliaTestnet,
+        arbitrumSepolia,
+        optimismSepolia,
+        baseSepolia,
+        sepolia,
+    ],
     connectors:
         typeof window !== "undefined"
             ? [
@@ -42,6 +55,8 @@ export const config = createConfig({
         [zkSyncSepoliaTestnet.id]: http(zkSyncRpcUrl),
         [arbitrumSepolia.id]: http(arbitrumRpcUrl),
         [optimismSepolia.id]: http(optimismRpcUrl),
+        [baseSepolia.id]: http(baseRpcUrl),
+        [sepolia.id]: http(ethereumRpcUrl),
     },
     ssr: true,
 });
@@ -63,6 +78,16 @@ export const supportedNetworks = {
         explorerUrl: "https://sepolia-optimism.etherscan.io",
         rpcUrl: optimismRpcUrl,
     },
+    [baseSepolia.id]: {
+        ...baseSepolia,
+        explorerUrl: "https://sepolia.basescan.org",
+        rpcUrl: baseRpcUrl,
+    },
+    [sepolia.id]: {
+        ...sepolia,
+        explorerUrl: "https://sepolia.etherscan.io",
+        rpcUrl: ethereumRpcUrl,
+    },
 } as const;
 
 // Export individual chains for convenience
@@ -70,5 +95,8 @@ export {
     zkSyncSepoliaTestnet as zkSyncSepolia,
     arbitrumSepolia,
     optimismSepolia,
+    baseSepolia,
+    sepolia as ethereumSepolia,
 };
+
 export type SupportedChainId = keyof typeof supportedNetworks;

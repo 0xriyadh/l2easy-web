@@ -26,18 +26,24 @@ const protocolToNetwork = {
     ZkSync: "zksync",
     Arbitrum: "arbitrum",
     Optimism: "optimism",
+    Base: "base",
+    Ethereum: "ethereum",
 } as const;
 
 const protocolIcons = {
     ZkSync: "Z",
     Arbitrum: "A",
     Optimism: "O",
+    Base: "B",
+    Ethereum: "E",
 };
 
 const protocolColors = {
     ZkSync: "from-purple-500 to-pink-500",
     Arbitrum: "from-blue-500 to-cyan-500",
     Optimism: "from-red-500 to-orange-500",
+    Base: "from-blue-600 to-indigo-600",
+    Ethereum: "from-gray-600 to-gray-800",
 };
 
 const categoryIcons = {

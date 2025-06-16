@@ -72,6 +72,28 @@ export const protocolData: ProtocolData = {
         EVM: 1,
         Language: 1,
     },
+    Base: {
+        TPS: 0.45,
+        Liveness: 0.52,
+        Risk: 0.75,
+        TVL: 0.15,
+        Finality: 0.95,
+        Stage: 1,
+        Cost: 0.65,
+        EVM: 1,
+        Language: 1,
+    },
+    Ethereum: {
+        TPS: 0.067,
+        Liveness: 1.0,
+        Risk: 1.0,
+        TVL: 1.0,
+        Finality: 1.0,
+        Stage: 2,
+        Cost: 0.1,
+        EVM: 1,
+        Language: 1,
+    },
 };
 
 export function calculateFinalScores(userWeights: UserWeights) {
