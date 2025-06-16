@@ -249,7 +249,7 @@ function ResultsContent() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {results.map((result, index) => (
+                            {results?.map((result, index) => (
                                 <div
                                     key={result.protocol}
                                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -278,11 +278,18 @@ function ResultsContent() {
                                                 {result.protocol}
                                             </h3>
                                             <p className="text-gray-600">
-                                                Match Score:{" "}
-                                                {(result.score * 100).toFixed(
-                                                    1
+                                                {result.score === 0 ? (
+                                                    "Coming soon..."
+                                                ) : (
+                                                    <span>
+                                                        {" "}
+                                                        Match Score:{" "}
+                                                        {(
+                                                            result.score * 100
+                                                        ).toFixed(1)}
+                                                        %
+                                                    </span>
                                                 )}
-                                                %
                                             </p>
                                         </div>
                                     </div>
