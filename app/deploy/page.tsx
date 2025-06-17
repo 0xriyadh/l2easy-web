@@ -26,6 +26,37 @@ const networkMapping = {
     ethereum: "Ethereum Sepolia",
 } as const;
 
+// Sample contract for auto-fill
+const SAMPLE_CONTRACT = `// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity ^0.8.24;
+
+/**
+ * @title Storage
+ * @dev Store & retrieve value in a variable
+ * @custom:dev-run-script ./scripts/deploy_with_ethers.ts
+ */
+contract Storage {
+
+    uint256 number;
+
+    /**
+     * @dev Store value in variable
+     * @param num value to store
+     */
+    function store(uint256 num) public {
+        number = num;
+    }
+
+    /**
+     * @dev Return value 
+     * @return value of 'number'
+     */
+    function retrieve() public view returns (uint256){
+        return number;
+    }
+}`;
+
 function DeployContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -55,6 +86,7 @@ function DeployContent() {
         handleSubmit,
         formState: { errors },
         setError,
+        setValue,
     } = useForm<CompileFormData>({
         resolver: zodResolver(CompileFormSchema),
     });
@@ -65,6 +97,7 @@ function DeployContent() {
         setCompileResult(null);
 
         try {
+            console.log("API_URL", process.env.API_URL);
             const response = await fetch(`${process.env.API_URL}/compile`, {
                 method: "POST",
                 headers: {
@@ -94,6 +127,10 @@ function DeployContent() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleAutoFill = () => {
+        setValue("source", SAMPLE_CONTRACT);
     };
 
     if (!mounted) {
@@ -166,9 +203,20 @@ function DeployContent() {
                 {/* Compile Form Card */}
                 <div className="bg-white rounded-xl shadow-xl border-0 overflow-hidden">
                     <div className="p-6">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                            Smart Contract Source Code
-                        </h2>
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-semibold text-gray-900">
+                                Smart Contract Source Code
+                            </h2>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={handleAutoFill}
+                                className="text-purple-600 border-purple-200 hover:bg-purple-50 hover:border-purple-300"
+                            >
+                                Auto-fill Sample Contract
+                            </Button>
+                        </div>
                         <form
                             onSubmit={handleSubmit(onSubmit)}
                             className="space-y-6"
