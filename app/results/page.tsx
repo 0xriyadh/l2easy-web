@@ -20,10 +20,6 @@ import {
     Code,
 } from "lucide-react";
 import { calculateFinalScores, type UserWeights } from "@/lib/utils";
-import ArbitrumIcon from "@/public/arbitrum-icon.svg";
-import OptimismIcon from "@/public/optimism-icon.svg";
-import EthereumIcon from "@/public/ethereum-icon.svg";
-import ZkSyncIcon from "@/public/zksync-era-icon.svg";
 import Image from "next/image";
 
 // Map protocol names to supported networks
@@ -36,11 +32,11 @@ const protocolToNetwork = {
 } as const;
 
 const protocolIcons = {
-    ZkSync: ZkSyncIcon,
-    Arbitrum: ArbitrumIcon,
-    Optimism: OptimismIcon,
+    ZkSync: "/zksync-era-icon.svg",
+    Arbitrum: "/arbitrum-icon.svg",
+    Optimism: "/optimism-icon.svg",
     Base: "/base-icon.png",
-    Ethereum: EthereumIcon,
+    Ethereum: "/ethereum-icon.svg",
 };
 
 const protocolColors = {
@@ -273,7 +269,7 @@ function ResultsContent() {
                                                 src={
                                                     protocolIcons[
                                                         result.protocol as keyof typeof protocolIcons
-                                                    ].src
+                                                    ] as string
                                                 }
                                                 alt={result.protocol}
                                                 width={30}

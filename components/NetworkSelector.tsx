@@ -6,10 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useNetwork } from "@/lib/network-context";
 import { useChainId, useSwitchChain, useAccount } from "wagmi";
 import type { SupportedChainId } from "@/lib/wagmi";
-import ArbitrumIcon from "@/public/arbitrum-icon.svg";
-import OptimismIcon from "@/public/optimism-icon.svg";
-import EthereumIcon from "@/public/ethereum-icon.svg";
-import ZkSyncIcon from "@/public/zksync-era-icon.svg";
 import Image from "next/image";
 
 export default function NetworkSelector() {
@@ -52,17 +48,17 @@ export default function NetworkSelector() {
             11155111: {
                 bg: "bg-gradient-to-r from-gray-600 to-gray-800",
                 text: "text-white",
-                icon: EthereumIcon,
+                icon: "/ethereum-icon.svg",
             }, // Ethereum Sepolia
             421614: {
                 bg: "bg-gradient-to-r from-blue-500 to-cyan-500",
                 text: "text-white",
-                icon: ArbitrumIcon,
+                icon: "/arbitrum-icon.svg",
             }, // Arbitrum Sepolia
             11155420: {
                 bg: "bg-gradient-to-r from-red-500 to-orange-500",
                 text: "text-white",
-                icon: OptimismIcon,
+                icon: "/optimism-icon.svg",
             }, // OP Sepolia
             84532: {
                 bg: "bg-gradient-to-r from-blue-600 to-indigo-600",
@@ -72,7 +68,7 @@ export default function NetworkSelector() {
             300: {
                 bg: "bg-gradient-to-r from-purple-500 to-pink-500",
                 text: "text-white",
-                icon: ZkSyncIcon,
+                icon: "/zksync-era-icon.svg",
             }, // zkSync Era Sepolia
         };
 
@@ -81,11 +77,7 @@ export default function NetworkSelector() {
         if (style) {
             return (
                 <Image
-                    src={
-                        typeof style.icon === "string"
-                            ? style.icon
-                            : style.icon.src
-                    }
+                    src={style.icon}
                     alt={network.name}
                     width={25}
                     height={25}
