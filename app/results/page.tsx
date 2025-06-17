@@ -22,7 +22,6 @@ import {
 import { calculateFinalScores, type UserWeights } from "@/lib/utils";
 import ArbitrumIcon from "@/public/arbitrum-icon.svg";
 import OptimismIcon from "@/public/optimism-icon.svg";
-import BaseIcon from "@/public/base-icon.png";
 import EthereumIcon from "@/public/ethereum-icon.svg";
 import ZkSyncIcon from "@/public/zksync-era-icon.svg";
 import Image from "next/image";
@@ -40,7 +39,7 @@ const protocolIcons = {
     ZkSync: ZkSyncIcon,
     Arbitrum: ArbitrumIcon,
     Optimism: OptimismIcon,
-    Base: BaseIcon,
+    Base: "/base-icon.png",
     Ethereum: EthereumIcon,
 };
 
@@ -151,9 +150,17 @@ function ResultsContent() {
                         <div className="flex justify-center mb-4">
                             <Image
                                 src={
-                                    protocolIcons[
+                                    typeof protocolIcons[
                                         topProtocol.protocol as keyof typeof protocolIcons
-                                    ].src
+                                    ] === "string"
+                                        ? (protocolIcons[
+                                              topProtocol.protocol as keyof typeof protocolIcons
+                                          ] as string)
+                                        : (
+                                              protocolIcons[
+                                                  topProtocol.protocol as keyof typeof protocolIcons
+                                              ] as any
+                                          ).src
                                 }
                                 alt={topProtocol.protocol}
                                 width={80}

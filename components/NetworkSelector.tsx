@@ -8,7 +8,6 @@ import { useChainId, useSwitchChain, useAccount } from "wagmi";
 import type { SupportedChainId } from "@/lib/wagmi";
 import ArbitrumIcon from "@/public/arbitrum-icon.svg";
 import OptimismIcon from "@/public/optimism-icon.svg";
-import BaseIcon from "@/public/base-icon.png";
 import EthereumIcon from "@/public/ethereum-icon.svg";
 import ZkSyncIcon from "@/public/zksync-era-icon.svg";
 import Image from "next/image";
@@ -68,7 +67,7 @@ export default function NetworkSelector() {
             84532: {
                 bg: "bg-gradient-to-r from-blue-600 to-indigo-600",
                 text: "text-white",
-                icon: BaseIcon,
+                icon: "/base-icon.png",
             }, // Base Sepolia
             300: {
                 bg: "bg-gradient-to-r from-purple-500 to-pink-500",
@@ -82,7 +81,11 @@ export default function NetworkSelector() {
         if (style) {
             return (
                 <Image
-                    src={style.icon}
+                    src={
+                        typeof style.icon === "string"
+                            ? style.icon
+                            : style.icon.src
+                    }
                     alt={network.name}
                     width={25}
                     height={25}
