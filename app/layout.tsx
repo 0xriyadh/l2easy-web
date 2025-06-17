@@ -4,7 +4,7 @@ import { Providers } from "./providers";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-    title: "L2Easy - Solidity Compiler",
+    title: "L2Easy - L2 Evaluation Framework",
     description: "A Next.js frontend for compiling Solidity smart contracts",
     icons: {
         icon: [
