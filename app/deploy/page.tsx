@@ -65,7 +65,7 @@ function DeployContent() {
         setCompileResult(null);
 
         try {
-            const response = await fetch("http://localhost:9999/compile", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/compile`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

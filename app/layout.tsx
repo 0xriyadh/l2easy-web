@@ -4,8 +4,18 @@ import { Providers } from "./providers";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-    title: "Solidity Compiler",
+    title: "L2Easy - Solidity Compiler",
     description: "A Next.js frontend for compiling Solidity smart contracts",
+    icons: {
+        icon: [
+            {
+                url: "/favicon.svg",
+                type: "image/svg+xml",
+            },
+        ],
+        shortcut: "/favicon.svg",
+        apple: "/favicon.svg",
+    },
 };
 
 export default function RootLayout({
