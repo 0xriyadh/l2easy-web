@@ -3,13 +3,12 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            NEXT_PUBLIC_WC_PROJECT_ID: string;
-            NEXT_PUBLIC_ZKSYNC_RPC: string;
-            NEXT_PUBLIC_ALCHEMY_ZKSYNC_RPC?: string;
-            NEXT_PUBLIC_ARBITRUM_SEPOLIA_RPC?: string;
-            NEXT_PUBLIC_OPTIMISM_SEPOLIA_RPC?: string;
-            NEXT_PUBLIC_BASE_SEPOLIA_RPC?: string;
-            NEXT_PUBLIC_ETHEREUM_SEPOLIA_RPC?: string;
+            WC_PROJECT_ID: string;
+            ZKSYNC_SEPOLIA_RPC: string;
+            ARBITRUM_SEPOLIA_RPC?: string;
+            OPTIMISM_SEPOLIA_RPC?: string;
+            BASE_SEPOLIA_RPC?: string;
+            ETHEREUM_SEPOLIA_RPC?: string;
         }
     }
 }
