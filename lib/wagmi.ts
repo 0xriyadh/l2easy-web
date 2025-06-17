@@ -37,7 +37,7 @@ export const config = createConfig({
                       target: "metaMask",
                   }),
                   walletConnect({
-                      projectId: process.env.WC_PROJECT_ID!,
+                      projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID!,
                       metadata: {
                           name: "Solidity Compiler",
                           description: "Compile and deploy Solidity contracts",

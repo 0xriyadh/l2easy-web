@@ -3,7 +3,7 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            WC_PROJECT_ID: string;
+            NEXT_PUBLIC_WC_PROJECT_ID: string;
             NEXT_PUBLIC_ZKSYNC_SEPOLIA_RPC: string;
             NEXT_PUBLIC_ARBITRUM_SEPOLIA_RPC: string;
             NEXT_PUBLIC_OPTIMISM_SEPOLIA_RPC: string;
