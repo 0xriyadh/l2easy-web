@@ -9,13 +9,15 @@ import {
 } from "viem/chains";
 
 // RPC URLs for different networks
-const zkSyncRpcUrl = process.env.ZKSYNC_SEPOLIA_RPC!;
+const zkSyncRpcUrl = process.env.NEXT_PUBLIC_ZKSYNC_SEPOLIA_RPC!;
 const arbitrumRpcUrl =
-    process.env.ARBITRUM_SEPOLIA_RPC ??
+    process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_RPC ??
     `https://sepolia-rollup.arbitrum.io/rpc`;
 const optimismRpcUrl =
-    process.env.OPTIMISM_SEPOLIA_RPC ?? `https://sepolia.optimism.io`;
-const baseRpcUrl = process.env.BASE_SEPOLIA_RPC ?? `https://sepolia.base.org`;
+    process.env.NEXT_PUBLIC_OPTIMISM_SEPOLIA_RPC ??
+    `https://sepolia.optimism.io`;
+const baseRpcUrl =
+    process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC ?? `https://sepolia.base.org`;
 const ethereumRpcUrl =
     process.env.ETHEREUM_SEPOLIA_RPC ??
     `https://ethereum-sepolia-rpc.publicnode.com`;
